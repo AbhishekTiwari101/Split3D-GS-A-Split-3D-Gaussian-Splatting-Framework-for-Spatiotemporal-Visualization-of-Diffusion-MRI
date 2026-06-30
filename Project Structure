@@ -1,0 +1,12 @@
+split3d-gs/
+├── core/                  # Core split algorithm
+│   ├── eigenspace.py
+│   ├── moment_preservation.py
+│   └── optimizer.py
+├── visualization/         # OpenGL rendering
+├── preprocessing/         # dMRI pipeline
+├── evaluation/            # Metrics & stats
+├── notebooks/             # Interactive demos
+├── data/                  # Sample HCP subset
+├── results/               # Paper figures
+└── README.md
