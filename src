@@ -1,1 +1,41 @@
 python src/preprocessing.py --input data/hcp/subject01/dwi.nii.gz --output data/processed/
+
+python src/gaussian_splatter.py \
+    --input data/processed/subject01 \
+    --output results/subject01 \
+    --epochs 50 \
+    --lr 0.01
+
+python src/visualization.py --input results/subject01/splats.pt --render
+
+import torch
+from torch import nn
+
+class SplitGaussianSplatter(nn.Module):
+    def __init__(self, volume_shape, device='cuda'):
+        super().__init__()
+        self.device = device
+        # Initialize Gaussian parameters
+        self.means = nn.Parameter(torch.randn(10000, 3, device=device))
+        self.scales = nn.Parameter(torch.ones(10000, 3, device=device))
+        self.rotations = nn.Parameter(torch.zeros(10000, 4, device=device))  # quaternions
+
+    def eigenspace_decomposition(self, cov_matrix):
+        """SVD-based split into two orthogonal eigenspaces"""
+        U, S, Vh = torch.linalg.svd(cov_matrix)
+        # Split into primary and secondary components
+        lambda1, lambda2 = torch.chunk(S, 2, dim=-1)
+        return U, torch.diag_embed(lambda1), torch.diag_embed(lambda2)
+
+    def moment_preservation_loss(self, original, split1, split2):
+        """Enforce 0th, 1st, 2nd order moments"""
+        # Implementation of Eq. (5) from paper
+        loss_zero = (split1.sum() + split2.sum() - original.sum()) ** 2
+        # ... similar for mean and covariance
+        return loss_zero + loss_mean + loss_cov
+
+    def forward(self, x):
+
+
+        # Splatting logic with surface bounding (Eq. 6)
+        pass
