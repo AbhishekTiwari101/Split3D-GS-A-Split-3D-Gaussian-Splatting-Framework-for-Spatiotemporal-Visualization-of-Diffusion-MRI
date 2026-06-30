@@ -1,0 +1,1 @@
+python src/preprocessing.py --input data/hcp/subject01/dwi.nii.gz --output data/processed/
