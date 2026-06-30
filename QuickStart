@@ -1,0 +1,19 @@
+from split3d_gs import SplitGaussianSplatter, HCPPreprocessor
+
+# Preprocess HCP data
+preprocessor = HCPPreprocessor()
+data = preprocessor.load_and_process("data/HCP_subject_1001/")
+
+# Initialize splatter
+splatter = SplitGaussianSplatter(
+    sigma_base=0.8,
+    moment_preservation=True,
+    surface_bounding=True,
+    fa_adaptive=True
+)
+
+# Train / Optimize
+splatter.fit(data, epochs=50, lr=0.01)
+
+# Render interactive visualization
+splatter.render_interactive(resolution=1024, temporal_steps=20)
