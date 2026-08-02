@@ -73,8 +73,7 @@ conda create -n split3d-gs python=3.10
 conda activate split3d-gs
 
 # Install dependencies
-pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
+pip install torch torchvision torchaudio 
+--index-url https://download.pytorch.org/whl/cu118
 pip install -r requirements.txt
 
-# Optional: Build OpenGL extensions
-python setup.py install
