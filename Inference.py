@@ -1,4 +1,3 @@
-"""
 ===============================================================
 Split3D-GS Inference Pipeline
 --------
@@ -13,7 +12,6 @@ Split3D-GS Inference Pipeline
 9. Save visualization
 10. Compute quantitative metrics
 ===============================================================
-"""
 
 import argparse
 import time
