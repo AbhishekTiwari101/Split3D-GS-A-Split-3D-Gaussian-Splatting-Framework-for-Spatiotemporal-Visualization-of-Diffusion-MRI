@@ -34,8 +34,4 @@ class SplitGaussianSplatter(nn.Module):
         # ... similar for mean and covariance
         return loss_zero + loss_mean + loss_cov
 
-    def forward(self, x):
-
-
-        # Splatting logic with surface bounding (Eq. 6)
-        pass
+    
