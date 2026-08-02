@@ -1,5 +1,5 @@
 split3d-gs/
-├── core/                  # Core split algorithm
+├── core/                  # Core split Algorithm
 │   ├── eigenspace.py
 │   ├── moment_preservation.py
 │   └── optimizer.py
