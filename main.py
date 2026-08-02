@@ -1,13 +1,3 @@
-"""
-===========================================================
-Split3D-GS
-A Split 3D Gaussian Splatting Framework
-for Spatiotemporal Visualization of Diffusion MRI
-
-Author : Abhishek Tiwari
-===========================================================
-"""
-
 import time
 import numpy as np
 import nibabel as nib
