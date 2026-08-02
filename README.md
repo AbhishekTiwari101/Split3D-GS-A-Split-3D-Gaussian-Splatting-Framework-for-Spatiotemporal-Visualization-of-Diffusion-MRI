@@ -9,7 +9,6 @@
 [![HCP Dataset](https://img.shields.io/badge/Dataset-HCP-blue)](https://www.humanconnectome.org/)
 
 > **"A split-kernel approach that preserves structural moments while delivering 40% lower MSE and real-time spatiotemporal rendering of brain white matter tracts."**
-
 ---
 
 ## ✨ Highlights & Novelty
