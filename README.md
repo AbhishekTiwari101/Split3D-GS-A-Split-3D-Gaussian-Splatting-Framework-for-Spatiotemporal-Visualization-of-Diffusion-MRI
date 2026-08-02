@@ -68,12 +68,6 @@ This repository presents the **official implementation** of the paper:
 
 ---
 
-## 📥 Installation
-
-```bash
-git clone https://github.com/abhishek-tiwari/split3d-gs.git
-cd split3d-gs
-
 # Create conda environment
 conda create -n split3d-gs python=3.10
 conda activate split3d-gs
