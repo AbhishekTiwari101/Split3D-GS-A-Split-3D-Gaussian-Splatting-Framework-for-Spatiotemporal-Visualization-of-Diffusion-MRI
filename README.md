@@ -1,6 +1,5 @@
 # Split3D-GS: A Split-Kernel 3D Gaussian Splatting Framework for Interactive Visualization of Diffusion MRI
 
-**🌟 State-of-the-Art | Real-time | Anatomically Faithful | Clinically Ready**
 
 [![GitHub stars](https://img.shields.io/badge/stars-★-brightgreen)](https://github.com/abhishek-tiwari/split3d-gs)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -15,7 +14,7 @@
 
 This repository presents the **official implementation** of the paper:
 
-> **A Split 3D Gaussian Splatting Framework for Spatiotemporal Visualization of Diffusion MRI**  
+> **Split3D-GS: A Split-Kernel 3D Gaussian Splatting Framework for Interactive Visualization of Diffusion MRI**  
 > *Abhishek Tiwari, Ankit Vidyarthi, Jaydeep Kishore, Varun Tiwari  
 > Q1 SCI Journal
 
