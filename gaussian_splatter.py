@@ -4,8 +4,7 @@ import torch.nn.functional as F
 from torch.linalg import svd
 
 # ==========================================================
-# Split3D-GS
-# Split 3D Gaussian Splatting for Diffusion MRI
+# Split3D-GS: A Split-Kernel 3D Gaussian Splatting Framework for Interactive Visualization of Diffusion MRI
 # ==========================================================
 
 class SplitGaussianSplatter(nn.Module):
