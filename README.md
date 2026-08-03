@@ -1,4 +1,4 @@
-# Split3D-GS: A Split 3D Gaussian Splatting Framework for Spatiotemporal Visualization of Diffusion MRI
+# Split3D-GS: A Split-Kernel 3D Gaussian Splatting Framework for Interactive Visualization of Diffusion MRI
 
 **🌟 State-of-the-Art | Real-time | Anatomically Faithful | Clinically Ready**
 
