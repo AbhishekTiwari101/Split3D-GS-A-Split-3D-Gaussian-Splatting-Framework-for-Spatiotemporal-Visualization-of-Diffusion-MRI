@@ -7,6 +7,21 @@
 [![HCP Dataset](https://img.shields.io/badge/Dataset-HCP-blue)](https://www.humanconnectome.org/)
 
 > **"A split-kernel approach that preserves structural moments while delivering 40% lower MSE and real-time spatiotemporal rendering of brain white matter tracts."**
+>
+> # Create environment
+conda create -n split3d-gs python=3.10 -y
+conda activate split3d-gs
+pip install torch torchvision --index-url https://download.pytorch.org/whl/cu121
+pip install numpy
+
+# Run inference (example)
+python Inference.py \
+    --volume data/hcp_subject_FA.npy \
+    --fa data/hcp_subject_FA.npy \
+    --num_splats 30000 \
+    --output_dir results/ \
+    --verify_moments
+    
 ---
 
 ## ✨ Highlights & Novelty
