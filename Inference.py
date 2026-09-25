@@ -1,3 +1,108 @@
+"""
+Inference script for Split3D-GS
+Produces the visualisation that corresponds to the quantitative results
+reported in the paper (Tables 3-6).
+"""
+
+import argparse
+import torch
+import numpy as np
+from pathlib import Path
+from gaussian_splatter import SplitGaussianSplatter
+
+
+def load_volume(path: str, device: str = "cuda") -> torch.Tensor:
+    """Load a preprocessed dMRI volume (FA-weighted or tensor magnitude)."""
+    vol = np.load(path).astype(np.float32)
+    vol = torch.from_numpy(vol).to(device)
+    # Normalise to [0,1] as described in the paper (Eq. 10)
+    vol = (vol - vol.min()) / (vol.max() - vol.min() + 1e-8)
+    return vol
+
+
+def main(args):
+    device = torch.device("cuda" if torch.cuda.is_available() and not args.cpu else "cpu")
+    print(f"Running inference on {device}")
+
+    # ------------------------------------------------------------------
+    # 1. Load data
+    # ------------------------------------------------------------------
+    volume = load_volume(args.volume, device=device)
+    FA = None
+    if args.fa is not None:
+        FA = load_volume(args.fa, device=device).flatten()
+        # Ensure FA has the same number of elements as splats (simple resize)
+        if FA.numel() != args.num_splats:
+            FA = torch.nn.functional.interpolate(
+                FA.view(1, 1, -1), size=args.num_splats, mode="linear", align_corners=False
+            ).view(-1)
+
+    # ------------------------------------------------------------------
+    # 2. Create model (paper settings)
+    # ------------------------------------------------------------------
+    model = SplitGaussianSplatter(
+        num_splats=args.num_splats,
+        volume_size=volume.shape,
+        device=device
+    ).to(device)
+
+    # Optional: load a checkpoint trained with the moment-preserving loss
+    if args.checkpoint is not None:
+        state = torch.load(args.checkpoint, map_location=device)
+        model.load_state_dict(state, strict=False)
+        print(f"Loaded checkpoint: {args.checkpoint}")
+
+    model.eval()
+
+    # ------------------------------------------------------------------
+    # 3. Verify moment preservation (paper claim)
+    # ------------------------------------------------------------------
+    if args.verify_moments:
+        SplitGaussianSplatter.verify_moment_preservation(num_samples=1000, device=device)
+
+    # ------------------------------------------------------------------
+    # 4. Inference – anisotropic rendering
+    # ------------------------------------------------------------------
+    with torch.no_grad():
+        rendered = model(volume, FA=FA)
+
+    # ------------------------------------------------------------------
+    # 5. Save results
+    # ------------------------------------------------------------------
+    out_dir = Path(args.output_dir)
+    out_dir.mkdir(parents=True, exist_ok=True)
+
+    np.save(out_dir / "rendered_volume.npy", rendered.cpu().numpy())
+    print(f"Saved rendered volume → {out_dir / 'rendered_volume.npy'}")
+
+    # Quick statistics that match paper metrics
+    print("\nInference statistics (for quick sanity check):")
+    print(f"  Rendered shape      : {tuple(rendered.shape)}")
+    print(f"  Min / Max / Mean    : {rendered.min():.4f} / {rendered.max():.4f} / {rendered.mean():.4f}")
+    print(f"  Non-zero voxels     : {(rendered > 0.01).sum().item()}")
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Split3D-GS Inference")
+    parser.add_argument("--volume", type=str, required=True,
+                        help="Path to preprocessed volume (.npy)")
+    parser.add_argument("--fa", type=str, default=None,
+                        help="Optional FA map (.npy) for adaptive σ")
+    parser.add_argument("--checkpoint", type=str, default=None,
+                        help="Optional model checkpoint")
+    parser.add_argument("--num_splats", type=int, default=50000)
+    parser.add_argument("--output_dir", type=str, default="./output")
+    parser.add_argument("--verify_moments", action="store_true",
+                        help="Run the numerical moment-preservation test")
+    parser.add_argument("--cpu", action="store_true")
+    args = parser.parse_args()
+    main(args)
+
+
+
+
+
+
 ===============================================================
 Split3D-GS Inference Pipeline
 --------
